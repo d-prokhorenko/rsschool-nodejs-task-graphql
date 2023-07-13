@@ -1,7 +1,18 @@
 import { FastifyType, RootValue } from '../root-value.js';
 
 export const getPostsRootValue = (fastify: FastifyType): Partial<RootValue> => ({
-  getAllPosts: async () => {
-    return await fastify.prisma.post.findMany();
+  getAllPosts: async () => await fastify.prisma.post.findMany(),
+  getPostById: async ({ id }: { id: string }) => {
+    const post = await fastify.prisma.post.findUnique({
+      where: {
+        id,
+      },
+    });
+
+    if (post) {
+      return post;
+    } else {
+      throw new Error('Post not found');
+    }
   },
 });
