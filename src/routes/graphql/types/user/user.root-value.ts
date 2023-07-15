@@ -19,14 +19,14 @@ export const getUsersRootValue = (fastify: FastifyType): Partial<RootValue> => (
     });
 
     if (user) {
-      const profileFound = await fastify.prisma.profile.findUnique({
+      const profile = await fastify.prisma.profile.findUnique({
         where: {
           userId: id,
         },
       });
       return {
         ...user,
-        profile: profileFound ? profileFound.id : null,
+        profile: profile ? profile.id : null,
       };
     } else {
       throw new Error('User not found');
