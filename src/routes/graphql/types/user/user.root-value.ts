@@ -21,7 +21,7 @@ export const getUsersRootValue = (fastify: FastifyType): Partial<RootValue> => (
     if (user) {
       const profileFound = await fastify.prisma.profile.findUnique({
         where: {
-          id,
+          userId: id,
         },
       });
       return {
