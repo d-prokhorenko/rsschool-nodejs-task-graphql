@@ -54,18 +54,26 @@ export const UserType = new GraphQLObjectType({
     userSubscribedTo: {
       type: new GraphQLList(UserType),
       resolve: async (root, _, fastify: FastifyType) =>
-        await fastify.prisma.subscribersOnAuthors.findMany({
+        await fastify.prisma.user.findMany({
           where: {
-            subscriberId: root.id,
+            subscribedToUser: {
+              some: {
+                subscriberId: root.id,
+              },
+            },
           },
         }),
       fields: () => ({
         subscribedToUser: {
           type: new GraphQLList(UserType),
           resolve: async (root, _, fastify: FastifyType) =>
-            await fastify.prisma.subscribersOnAuthors.findMany({
+            await fastify.prisma.user.findMany({
               where: {
-                subscriberId: root.id,
+                userSubscribedTo: {
+                  some: {
+                    authorId: root.id,
+                  },
+                },
               },
             }),
         },
@@ -74,18 +82,26 @@ export const UserType = new GraphQLObjectType({
     subscribedToUser: {
       type: new GraphQLList(UserType),
       resolve: async (root, _, fastify: FastifyType) =>
-        await fastify.prisma.subscribersOnAuthors.findMany({
+        await fastify.prisma.user.findMany({
           where: {
-            subscriberId: root.id,
+            userSubscribedTo: {
+              some: {
+                authorId: root.id,
+              },
+            },
           },
         }),
       fields: () => ({
         userSubscribedTo: {
           type: new GraphQLList(UserType),
           resolve: async (root, _, fastify: FastifyType) =>
-            await fastify.prisma.subscribersOnAuthors.findMany({
+            await fastify.prisma.user.findMany({
               where: {
-                subscriberId: root.id,
+                subscribedToUser: {
+                  some: {
+                    subscriberId: root.id,
+                  },
+                },
               },
             }),
         },

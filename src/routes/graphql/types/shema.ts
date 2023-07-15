@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-return */
 import { GraphQLObjectType, GraphQLSchema } from 'graphql';
 import { memberTypeSchemaFields } from './member-type/member-type.schema.js';
 import { postSchemaFields } from './post/post.schema.js';
