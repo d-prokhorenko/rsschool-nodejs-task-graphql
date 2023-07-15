@@ -1,17 +1,10 @@
 import { FastifyType, RootValue } from '../root-value.js';
 
 export const getUsersRootValue = (fastify: FastifyType): Partial<RootValue> => ({
-  getAllUsers: async () => await fastify.prisma.user.findMany(),
-  getUserById: async ({ id }: { id: string }) => {
-    const user = await fastify.prisma.user.findUnique({
-      where: {
-        id,
-      },
-    });
-
-    return user;
+  getAllUsers: async () => {
+    return await fastify.prisma.user.findMany();
   },
-  getUserByIdWithProfile: async ({ id }: { id: string }) => {
+  getUserById: async ({ id }: { id: string }) => {
     const user = await fastify.prisma.user.findUnique({
       where: {
         id,
@@ -24,12 +17,31 @@ export const getUsersRootValue = (fastify: FastifyType): Partial<RootValue> => (
           userId: id,
         },
       });
+      const memberType = profile
+        ? await fastify.prisma.memberType.findUnique({
+            where: {
+              id: profile.memberTypeId,
+            },
+          })
+        : null;
+      const posts = await fastify.prisma.post.findMany({
+        where: {
+          authorId: id,
+        },
+      });
+
       return {
         ...user,
-        profile: profile ? profile.id : null,
+        profile: profile
+          ? {
+              ...profile,
+              memberType,
+            }
+          : null,
+        posts,
       };
-    } else {
-      throw new Error('User not found');
     }
+
+    return user;
   },
 });
