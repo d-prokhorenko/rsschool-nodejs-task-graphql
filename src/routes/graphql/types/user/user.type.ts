@@ -13,6 +13,7 @@ import { UUIDType } from '../uuid.js';
 import { ProfileType } from '../profile/profile.type.js';
 import { PostType } from '../post/post.type.js';
 import { MemberType } from '../member-type/member-type.type.js';
+import { FastifyType } from '../root-value.js';
 
 export const UserType = new GraphQLObjectType({
   name: 'User',
@@ -23,7 +24,7 @@ export const UserType = new GraphQLObjectType({
     balance: { type: GraphQLInt },
     profile: {
       type: ProfileType,
-      resolve: async (root, _, fastify) =>
+      resolve: async (root, _, fastify: FastifyType) =>
         await fastify.prisma.profile.findUnique({
           where: {
             userId: root.id,
@@ -32,10 +33,10 @@ export const UserType = new GraphQLObjectType({
       fields: () => ({
         memberType: {
           type: MemberType,
-          resolve: async (root, _, fastify) =>
+          resolve: async (root, _, fastify: FastifyType) =>
             await fastify.prisma.memberType.findUnique({
               where: {
-                id: root.id,
+                id: root.memberTypeId,
               },
             }),
         },
@@ -43,12 +44,52 @@ export const UserType = new GraphQLObjectType({
     },
     posts: {
       type: new GraphQLList(PostType),
-      resolve: async (root, _, fastify) =>
+      resolve: async (root, _, fastify: FastifyType) =>
         await fastify.prisma.post.findMany({
           where: {
             authorId: root.id,
           },
         }),
+    },
+    userSubscribedTo: {
+      type: new GraphQLList(UserType),
+      resolve: async (root, _, fastify: FastifyType) =>
+        await fastify.prisma.subscribersOnAuthors.findMany({
+          where: {
+            subscriberId: root.id,
+          },
+        }),
+      fields: () => ({
+        subscribedToUser: {
+          type: new GraphQLList(UserType),
+          resolve: async (root, _, fastify: FastifyType) =>
+            await fastify.prisma.subscribersOnAuthors.findMany({
+              where: {
+                subscriberId: root.id,
+              },
+            }),
+        },
+      }),
+    },
+    subscribedToUser: {
+      type: new GraphQLList(UserType),
+      resolve: async (root, _, fastify: FastifyType) =>
+        await fastify.prisma.subscribersOnAuthors.findMany({
+          where: {
+            subscriberId: root.id,
+          },
+        }),
+      fields: () => ({
+        userSubscribedTo: {
+          type: new GraphQLList(UserType),
+          resolve: async (root, _, fastify: FastifyType) =>
+            await fastify.prisma.subscribersOnAuthors.findMany({
+              where: {
+                subscriberId: root.id,
+              },
+            }),
+        },
+      }),
     },
   }),
 });
