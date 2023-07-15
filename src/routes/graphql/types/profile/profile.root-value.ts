@@ -9,10 +9,6 @@ export const getProfilesRootValue = (fastify: FastifyType): Partial<RootValue> =
       },
     });
 
-    if (profile) {
-      return profile;
-    } else {
-      throw new Error('Profile not found');
-    }
+    return profile;
   },
 });

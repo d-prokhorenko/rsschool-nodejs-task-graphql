@@ -9,10 +9,6 @@ export const getPostsRootValue = (fastify: FastifyType): Partial<RootValue> => (
       },
     });
 
-    if (post) {
-      return post;
-    } else {
-      throw new Error('Post not found');
-    }
+    return post;
   },
 });

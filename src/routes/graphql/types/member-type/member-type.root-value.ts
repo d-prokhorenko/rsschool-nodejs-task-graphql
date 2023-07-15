@@ -10,10 +10,6 @@ export const getMemberTypesRootValue = (fastify: FastifyType): Partial<RootValue
       },
     });
 
-    if (memberType) {
-      return memberType;
-    } else {
-      throw new Error('Member type not found');
-    }
+    return memberType;
   },
 });

@@ -9,8 +9,25 @@ export const getUsersRootValue = (fastify: FastifyType): Partial<RootValue> => (
       },
     });
 
+    return user;
+  },
+  getUserByIdWithProfile: async ({ id }: { id: string }) => {
+    const user = await fastify.prisma.user.findUnique({
+      where: {
+        id,
+      },
+    });
+
     if (user) {
-      return user;
+      const profileFound = await fastify.prisma.profile.findUnique({
+        where: {
+          id,
+        },
+      });
+      return {
+        ...user,
+        profile: profileFound ? profileFound.id : null,
+      };
     } else {
       throw new Error('User not found');
     }

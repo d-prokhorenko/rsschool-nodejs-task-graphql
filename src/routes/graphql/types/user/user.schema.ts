@@ -18,4 +18,14 @@ export const userSchemaFields = {
     resolve: async ({ getUserById }: RootValue, args: { id: string }) =>
       await getUserById(args),
   },
+  userWithNullProfile: {
+    type: UserType,
+    args: {
+      id: { type: new GraphQLNonNull(UUIDType) },
+    },
+    resolve: async (
+      { getUserByIdWithProfile }: RootValue,
+      args: { id: string; profile: { args: { id: string } } },
+    ) => await getUserByIdWithProfile(args),
+  },
 };
