@@ -1,5 +1,5 @@
 import { FastifyPluginAsyncTypebox } from '@fastify/type-provider-typebox';
-import { createGqlResponse, gqlResponse } from './schemas.js';
+import { createGqlResponseSchema, gqlResponseSchema } from './schemas.js';
 import { graphql } from 'graphql';
 import { getRootValue } from './types/root-value.js';
 import { Schema } from './types/shema.js';
@@ -9,9 +9,9 @@ const plugin: FastifyPluginAsyncTypebox = async (fastify) => {
     url: '/',
     method: 'POST',
     schema: {
-      ...createGqlResponse,
+      ...createGqlResponseSchema,
       response: {
-        200: gqlResponse,
+        200: gqlResponseSchema,
       },
     },
     async handler(req) {
