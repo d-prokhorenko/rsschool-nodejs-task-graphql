@@ -1,11 +1,12 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-return */
-import { GraphQLNonNull, GraphQLList } from 'graphql';
+import { GraphQLNonNull, GraphQLList, GraphQLString } from 'graphql';
 import { RootValue } from '../root-value.js';
 import { PostType } from './post.type.js';
 import { UUIDType } from '../uuid.js';
 
-export const postSchemaFields = {
+export const postSchemaQueryFields = {
   posts: {
     type: new GraphQLNonNull(new GraphQLList(new GraphQLNonNull(PostType))),
     resolve: async ({ getAllPosts }: RootValue) => await getAllPosts(),
@@ -17,5 +18,21 @@ export const postSchemaFields = {
     },
     resolve: async ({ getPostById }: RootValue, args: { id: string }) =>
       await getPostById(args),
+  },
+};
+
+export const postSchemaMutationFields = {
+  createPost: {
+    type: PostType,
+    args: {
+      dto: {
+        title: { type: new GraphQLNonNull(GraphQLString) },
+        content: { type: new GraphQLNonNull(GraphQLString) },
+        authorId: { type: new GraphQLNonNull(UUIDType) },
+      },
+    },
+    resolve: async ({ createPost }: RootValue, args) => {
+      return await createPost(args.dto);
+    },
   },
 };

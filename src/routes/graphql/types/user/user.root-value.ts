@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { FastifyType, RootValue } from '../root-value.js';
 
 export const getUsersRootValue = (fastify: FastifyType): Partial<RootValue> => ({
@@ -9,6 +10,11 @@ export const getUsersRootValue = (fastify: FastifyType): Partial<RootValue> => (
       where: {
         id,
       },
+    });
+  },
+  createUser: async (data) => {
+    return await fastify.prisma.user.create({
+      data,
     });
   },
 });

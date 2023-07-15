@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { FastifyType, RootValue } from '../root-value.js';
 
 export const getPostsRootValue = (fastify: FastifyType): Partial<RootValue> => ({
@@ -11,4 +12,5 @@ export const getPostsRootValue = (fastify: FastifyType): Partial<RootValue> => (
 
     return post;
   },
+  createPost: async (data) => await fastify.prisma.post.create({ data }),
 });
