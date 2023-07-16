@@ -23,4 +23,11 @@ export const getProfilesRootValue = (fastify: FastifyType): Partial<RootValue> =
         id,
       },
     }),
+  changeProfile: async ({ id, isMale }) =>
+    await fastify.prisma.profile.update({
+      where: { id },
+      data: {
+        isMale,
+      },
+    }),
 });

@@ -30,3 +30,10 @@ export const CreateProfileInputType = new GraphQLInputObjectType({
     memberTypeId: { type: new GraphQLNonNull(MemberTypeIdEnum) },
   },
 });
+
+export const ChangeProfileInputType = new GraphQLInputObjectType({
+  name: 'ChangeProfileInput',
+  fields: {
+    isMale: { type: new GraphQLNonNull(GraphQLBoolean) },
+  },
+});

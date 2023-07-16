@@ -3,7 +3,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 import { GraphQLNonNull, GraphQLList } from 'graphql';
 import { RootValue } from '../root-value.js';
-import { CreatePostInputType, PostType } from './post.type.js';
+import { ChangePostInputType, CreatePostInputType, PostType } from './post.type.js';
 import { UUIDType } from '../uuid.js';
 
 export const postSchemaQueryFields = {
@@ -38,6 +38,16 @@ export const postSchemaMutationFields = {
     },
     resolve: async ({ deletePost }: RootValue, args) => {
       return await deletePost(args);
+    },
+  },
+  changePost: {
+    type: PostType,
+    args: {
+      id: { type: new GraphQLNonNull(UUIDType) },
+      dto: { type: ChangePostInputType },
+    },
+    resolve: async ({ changePost }: RootValue, args) => {
+      return await changePost(args);
     },
   },
 };

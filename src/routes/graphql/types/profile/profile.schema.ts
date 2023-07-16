@@ -3,7 +3,11 @@
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 import { GraphQLNonNull, GraphQLList } from 'graphql';
 import { RootValue } from '../root-value.js';
-import { CreateProfileInputType, ProfileType } from './profile.type.js';
+import {
+  ChangeProfileInputType,
+  CreateProfileInputType,
+  ProfileType,
+} from './profile.type.js';
 import { UUIDType } from '../uuid.js';
 
 export const profileSchemaQueryFields = {
@@ -38,6 +42,16 @@ export const profileSchemaMutationFields = {
     },
     resolve: async ({ deleteProfile }: RootValue, args) => {
       return await deleteProfile(args);
+    },
+  },
+  changeProfile: {
+    type: ProfileType,
+    args: {
+      id: { type: new GraphQLNonNull(UUIDType) },
+      dto: { type: ChangeProfileInputType },
+    },
+    resolve: async ({ changeProfile }: RootValue, args) => {
+      return await changeProfile(args);
     },
   },
 };

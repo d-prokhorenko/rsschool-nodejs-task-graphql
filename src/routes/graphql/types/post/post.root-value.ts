@@ -19,4 +19,11 @@ export const getPostsRootValue = (fastify: FastifyType): Partial<RootValue> => (
         id,
       },
     }),
+  changePost: async ({ id, title }) =>
+    await fastify.prisma.post.update({
+      where: { id },
+      data: {
+        title,
+      },
+    }),
 });

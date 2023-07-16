@@ -23,4 +23,11 @@ export const getUsersRootValue = (fastify: FastifyType): Partial<RootValue> => (
         id,
       },
     }),
+  changeUser: async ({ id, name }) =>
+    await fastify.prisma.user.update({
+      where: { id },
+      data: {
+        name,
+      },
+    }),
 });
