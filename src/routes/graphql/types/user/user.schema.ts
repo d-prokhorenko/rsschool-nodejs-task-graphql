@@ -51,4 +51,24 @@ export const userSchemaMutationFields = {
       return await changeUser(args);
     },
   },
+  subscribeTo: {
+    type: UserType,
+    args: {
+      userId: { type: new GraphQLNonNull(UUIDType) },
+      authorId: { type: new GraphQLNonNull(UUIDType) },
+    },
+    resolve: async ({ subscribeTo }: RootValue, args) => {
+      return await subscribeTo(args);
+    },
+  },
+  unsubscribeFrom: {
+    type: UserType,
+    args: {
+      userId: { type: new GraphQLNonNull(UUIDType) },
+      authorId: { type: new GraphQLNonNull(UUIDType) },
+    },
+    resolve: async ({ unsubscribeFrom }: RootValue, args) => {
+      return await unsubscribeFrom(args);
+    },
+  },
 };

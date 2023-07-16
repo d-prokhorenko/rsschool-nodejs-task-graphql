@@ -30,4 +30,30 @@ export const getUsersRootValue = (fastify: FastifyType): Partial<RootValue> => (
         name,
       },
     }),
+  subscribeTo: async ({ userId, authorId }) =>
+    await fastify.prisma.user.update({
+      where: {
+        id: userId,
+      },
+      data: {
+        userSubscribedTo: {
+          create: {
+            authorId,
+          },
+        },
+      },
+    }),
+  unsubscribeFrom: async ({ userId, authorId }) =>
+    await fastify.prisma.user.update({
+      where: {
+        id: userId,
+      },
+      data: {
+        userSubscribedTo: {
+          create: {
+            authorId,
+          },
+        },
+      },
+    }),
 });
