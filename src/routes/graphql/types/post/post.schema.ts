@@ -3,7 +3,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 import { GraphQLNonNull, GraphQLList, GraphQLString } from 'graphql';
 import { RootValue } from '../root-value.js';
-import { PostType } from './post.type.js';
+import { CreatePostInputType, PostType } from './post.type.js';
 import { UUIDType } from '../uuid.js';
 
 export const postSchemaQueryFields = {
@@ -25,14 +25,10 @@ export const postSchemaMutationFields = {
   createPost: {
     type: PostType,
     args: {
-      dto: {
-        title: { type: new GraphQLNonNull(GraphQLString) },
-        content: { type: new GraphQLNonNull(GraphQLString) },
-        authorId: { type: new GraphQLNonNull(UUIDType) },
-      },
+      dto: { type: CreatePostInputType },
     },
-    resolve: async ({ createPost }: RootValue, args) => {
-      return await createPost(args.dto);
+    resolve: async ({ createPost }: RootValue, { dto }) => {
+      return await createPost(dto);
     },
   },
 };

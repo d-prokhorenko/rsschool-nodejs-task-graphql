@@ -8,6 +8,8 @@ import {
   GraphQLInt,
   GraphQLNonNull,
   GraphQLList,
+  GraphQLInputObjectType,
+  GraphQLFloat,
 } from 'graphql';
 import { UUIDType } from '../uuid.js';
 import { ProfileType } from '../profile/profile.type.js';
@@ -108,4 +110,12 @@ export const UserType = new GraphQLObjectType({
       }),
     },
   }),
+});
+
+export const CreateUserInputType = new GraphQLInputObjectType({
+  name: 'CreateUserInput',
+  fields: {
+    name: { type: new GraphQLNonNull(GraphQLString) },
+    balance: { type: new GraphQLNonNull(GraphQLFloat) },
+  },
 });

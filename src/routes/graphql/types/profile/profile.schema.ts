@@ -3,7 +3,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 import { GraphQLNonNull, GraphQLList, GraphQLBoolean, GraphQLInt } from 'graphql';
 import { RootValue } from '../root-value.js';
-import { ProfileType } from './profile.type.js';
+import { CreateProfileInputType, ProfileType } from './profile.type.js';
 import { UUIDType } from '../uuid.js';
 import { MemberTypeIdEnum } from '../member-type/member-type.type.js';
 
@@ -26,15 +26,10 @@ export const profileSchemaMutationFields = {
   createProfile: {
     type: ProfileType,
     args: {
-      dto: {
-        isMale: { type: new GraphQLNonNull(GraphQLBoolean) },
-        yearOfBirth: { type: new GraphQLNonNull(GraphQLInt) },
-        userId: { type: new GraphQLNonNull(UUIDType) },
-        memberTypeId: { type: new GraphQLNonNull(MemberTypeIdEnum) },
-      },
+      dto: { type: CreateProfileInputType },
     },
-    resolve: async ({ createProfile }: RootValue, args) => {
-      return await createProfile(args.dto);
+    resolve: async ({ createProfile }: RootValue, { dto }) => {
+      return await createProfile(dto);
     },
   },
 };
