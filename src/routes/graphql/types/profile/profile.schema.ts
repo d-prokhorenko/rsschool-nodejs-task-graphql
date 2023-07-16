@@ -1,11 +1,10 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-return */
-import { GraphQLNonNull, GraphQLList, GraphQLBoolean, GraphQLInt } from 'graphql';
+import { GraphQLNonNull, GraphQLList } from 'graphql';
 import { RootValue } from '../root-value.js';
 import { CreateProfileInputType, ProfileType } from './profile.type.js';
 import { UUIDType } from '../uuid.js';
-import { MemberTypeIdEnum } from '../member-type/member-type.type.js';
 
 export const profileSchemaQueryFields = {
   profiles: {
@@ -30,6 +29,15 @@ export const profileSchemaMutationFields = {
     },
     resolve: async ({ createProfile }: RootValue, { dto }) => {
       return await createProfile(dto);
+    },
+  },
+  deleteProfile: {
+    type: ProfileType,
+    args: {
+      id: { type: new GraphQLNonNull(UUIDType) },
+    },
+    resolve: async ({ deleteProfile }: RootValue, args) => {
+      return await deleteProfile(args);
     },
   },
 };

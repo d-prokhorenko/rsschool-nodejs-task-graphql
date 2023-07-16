@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-return */
-import { GraphQLNonNull, GraphQLList, GraphQLString, GraphQLInt } from 'graphql';
+import { GraphQLNonNull, GraphQLList } from 'graphql';
 import { RootValue } from '../root-value.js';
 import { CreateUserInputType, UserType } from './user.type.js';
 import { UUIDType } from '../uuid.js';
@@ -30,6 +30,15 @@ export const userSchemaMutationFields = {
     },
     resolve: async ({ createUser }: RootValue, { dto }) => {
       return await createUser(dto);
+    },
+  },
+  deleteUser: {
+    type: UserType,
+    args: {
+      id: { type: new GraphQLNonNull(UUIDType) },
+    },
+    resolve: async ({ deleteUser }: RootValue, args) => {
+      return await deleteUser(args);
     },
   },
 };

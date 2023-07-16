@@ -17,4 +17,10 @@ export const getUsersRootValue = (fastify: FastifyType): Partial<RootValue> => (
       data,
     });
   },
+  deleteUser: async ({ id }) =>
+    await fastify.prisma.user.delete({
+      where: {
+        id,
+      },
+    }),
 });

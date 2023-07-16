@@ -13,4 +13,10 @@ export const getPostsRootValue = (fastify: FastifyType): Partial<RootValue> => (
     return post;
   },
   createPost: async (data) => await fastify.prisma.post.create({ data }),
+  deletePost: async ({ id }) =>
+    await fastify.prisma.post.delete({
+      where: {
+        id,
+      },
+    }),
 });

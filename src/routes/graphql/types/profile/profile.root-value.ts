@@ -17,4 +17,10 @@ export const getProfilesRootValue = (fastify: FastifyType): Partial<RootValue> =
     await fastify.prisma.profile.create({
       data,
     }),
+  deleteProfile: async ({ id }) =>
+    await fastify.prisma.profile.delete({
+      where: {
+        id,
+      },
+    }),
 });
