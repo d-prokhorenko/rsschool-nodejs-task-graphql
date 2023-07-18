@@ -198,6 +198,7 @@ await test('gql-queries', async (t) => {
     t.ok(dataUser.user.posts[0].id === post1.id);
 
     const foundUser1 = dataUsers.users.find((user) => user.id === user1.id);
+
     t.same(foundUser1, dataUser.user);
   });
 
@@ -210,7 +211,7 @@ await test('gql-queries', async (t) => {
     await subscribeTo(app, user3.id, user1.id);
 
     const {
-      body: { data: data },
+      body: { data: data, errors },
     } = await gqlQuery(app, {
       query: `query ($userId: UUID!) {
           user(id: $userId) {
